@@ -20,6 +20,10 @@ module RailsEventStoreActiveRecord
     let(:test_race_conditions_auto) { !ENV['DATABASE_URL'].include?("sqlite") }
     let(:test_race_conditions_any)  { !ENV['DATABASE_URL'].include?("sqlite") }
 
+    def self.explicit_version_interchanging_modes
+      [:auto]
+    end
+
     it_behaves_like :event_repository, EventRepository
 
     specify "using preload()" do
