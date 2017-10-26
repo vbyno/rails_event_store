@@ -10,15 +10,15 @@ module RailsEventStoreActiveRecord
       events = normalize_to_array(events)
       expected_version =
         case expected_version
-        when nil
-          raise RubyEventStore::InvalidExpectedVersion
+        when Integer, :any
+          expected_version
         when :none
           -1
         when :auto
           eis = EventInStream.where(stream: stream_name).order("position DESC").first
           (eis && eis.position) || -1
         else
-          expected_version
+          raise RubyEventStore::InvalidExpectedVersion
         end
 
       in_stream = events.flat_map.with_index do |event, index|
