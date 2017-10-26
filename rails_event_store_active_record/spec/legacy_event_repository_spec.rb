@@ -73,6 +73,17 @@ module RailsEventStoreActiveRecord
       }.to raise_error(RubyEventStore::InvalidExpectedVersion, ":auto mode is not supported by LegacyEventRepository")
     end
 
+    specify "random garbage mode is not supported" do
+      repository = LegacyEventRepository.new
+      expect{
+        repository.append_to_stream(
+          TestDomainEvent.new(event_id: SecureRandom.uuid),
+          'stream_2',
+          Object.new
+        )
+      }.to raise_error(RubyEventStore::InvalidExpectedVersion)
+    end
+
     private
 
     def expect_query(match, &block)
