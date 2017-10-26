@@ -109,7 +109,6 @@ module RailsEventStoreActiveRecord
         raise RubyEventStore::InvalidExpectedVersion
       end
       case expected_version
-      when :any
       when :none
         raise RubyEventStore::WrongExpectedEventVersion if stream_non_empty?(stream_name)
       when Integer
